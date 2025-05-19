@@ -1,0 +1,41 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AR Fotografía + Video</title>
+  <script src="https://unpkg.com/aframe@1.2.0/dist/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.1.4/dist/aframe/mindar-aframe.prod.js"></script>
+  <style>
+    body { margin: 0; overflow: hidden; }
+    #video-element { display: none; }
+  </style>
+</head>
+<body>
+  <a-scene mindar-image="imageTargetSrc: ./assets/targets.mind; autoStart: true;" embedded color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: true">
+    <a-assets>
+      <video id="video-element" src="./assets/prueba  video.mp4" loop muted="true" preload="auto" crossorigin="anonymous"></video>
+    </a-assets>
+
+    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+    <a-entity mindar-image-target="targetIndex: 0">
+      <a-video src="#video-element" width="1" height="0.56" position="0 0 0"></a-video>
+    </a-entity>
+  </a-scene>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const video = document.querySelector("#video-element");
+      const scene = document.querySelector("a-scene");
+
+      scene.addEventListener("targetFound", () => {
+        video.play();
+      });
+
+      scene.addEventListener("targetLost", () => {
+        video.pause();
+      });
+    });
+  </script>
+</body>
+</html>
